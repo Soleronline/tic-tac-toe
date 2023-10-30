@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tic Tac Toe</title>
+  
+    <style type="text/css">
+        input.pos{
+            width: 30px;
+            height: 30px;
+            color:  black;
+        }
+    </style>
+</head>
+
+
+<body>
+    <main>
+        <h1>Tic Tac Toe</h1>
+        <div id="myform">
+            <div>
+                <div>
+                    <label for="player1">Player 1</label>
+                </div>
+                <div>
+                    <input type="text" id="player1" autofocus>
+                </div>
+            </div>
+            
+            <div>
+                <div>
+                    <label for="player2">Player 2</label>
+                </div>
+                <div>
+                    <input type="text" id="player2"><br>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <input id="button_start" type="button" value="Play!!" onclick="start()">
+                </div>
+            </div>
+        </div>
+
+        <div id="message"></div>
+
+        <div id="keyboard" style="display: none">
+            <h2><span id="name_player1"></span> VS <span id="name_player2"></span></h2>
+            <div id="who_has_turn_is_it"></div>
+            <table border="2" colspan="2" cellpadding="2">
+                <tr>
+                </tr>
+                <tr>
+                    <td><input type="button" class="pos" id="pos1"> </td>
+                    <td><input type="button" class="pos" id="pos2"> </td>
+                    <td><input type="button" class="pos" id="pos3"> </td>
+                </tr>
+                <tr>
+                    <td><input type="button" class="pos" id="pos4"> </td>
+                    <td><input type="button" class="pos" id="pos5"> </td>
+                    <td><input type="button" class="pos" id="pos6"> </td>
+                </tr>
+                <tr>
+                    <td><input type="button" class="pos" id="pos7"> </td>
+                    <td><input type="button" class="pos" id="pos8"> </td>
+                    <td><input type="button" class="pos" id="pos9"> </td>
+                </tr>
+            </table>
+        </div>
+    </main>
+</body>
+<script src="functions.js"></script>
+
+</html>
