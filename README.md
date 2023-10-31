@@ -1,6 +1,8 @@
 # Tic-Tac-oTe
 Example of the game "tic-tac-toe" developed with HTML, Javascript and CSS (the mimimum)
 
+[Play now](https://soleronline.github.io/tic-tac-toe/)
+
 ## How to play?
  - Enter the name of the 2 players and press the `Play!!` button.
  - Randomly it will be indicated that playing begins.
