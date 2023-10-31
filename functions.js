@@ -6,27 +6,24 @@ let player2 = "";
 
 let combinations = {
     '1': {
-        '2': {'3': ''},
-        '4': {'7': ''},
-        '5': {'9': ''},
+        '2': { '3': '' },
+        '4': { '7': '' },
+        '5': { '9': '' },
     },
     '2': {
-        '5': {'8': ''},
+        '5': { '8': '' },
     },
     '3': {
-        '6': {'9': ''},
-        '5': {'7': ''},
+        '6': { '9': '' },
+        '5': { '7': '' },
     },
     '4': {
-        '5': {'6': ''}
+        '5': { '6': '' }
     },
     '7': {
-        '8': {'9': ''}
+        '8': { '9': '' }
     },
 }
-
-const show_message = (message) => typeof TEST === 'undefined' ? document.querySelector("#message").innerHTML = message : null;
-const restart_message = () => document.querySelector("#message").innerHTML = '';
 
 const show_form = (id_form) => document.getElementById(id_form).style.display = "block";
 const hide_form = (id_form) => document.getElementById(id_form).style.display = "none";
@@ -38,7 +35,18 @@ const show_winning_message = () => show_message("Player <strong><u>" + (active_p
 const show_tie_message = () => show_message("There has been a tie");
 
 const who_starts = () => Boolean(Math.floor(Math.random() * 2));
-const write_who_has_turn_is_it = () => document.getElementById("who_has_turn_is_it").innerHTML = "It's player <strong><i>" + (active_player ? player1 : player2) + "</i></strong>'s turn";
+
+/**
+ * The function updates the HTML element with the id "who_has_turn_is_it" to display whose turn it is.
+ */
+function write_who_has_turn_is_it() {
+    document.getElementById("who_has_turn_is_it").innerHTML = "";
+    const node = document.createElement("span");
+    document.getElementById("who_has_turn_is_it").appendChild(node);
+    node.innerHTML = ((active_player ? player1 : player2) + "'s turn");
+    node.classList.add("name_player_transform");
+
+}
 const player_change = () => active_player = !active_player;
 const get_char = () => active_player ? CHAR_PLAYER1 : CHAR_PLAYER2;
 
@@ -48,13 +56,13 @@ const get_char = () => active_player ? CHAR_PLAYER1 : CHAR_PLAYER2;
  * player names, hiding the form, showing the keyboard, determining the starting player, and adding
  * event listeners to the game buttons.
  */
-function start(){
+function start() {
     restart_message();
     player1 = document.getElementById("player1").value.trim();
     player2 = document.getElementById("player2").value.trim();
 
     [valid, message] = validate_players(player1, player2);
-    if (valid){
+    if (valid) {
         show_player_names(player1, player2);
         hide_form("myform");
         show_keyboard("keyboard");
@@ -62,10 +70,10 @@ function start(){
         write_who_has_turn_is_it();
 
         let buttons_pos = document.getElementsByClassName("pos");
-        for (let bot of buttons_pos){
+        for (let bot of buttons_pos) {
             bot.addEventListener("click", move);
         }
-    }else{
+    } else {
         show_message(message);
     }
 }
@@ -77,18 +85,18 @@ function start(){
  * function. It contains information about the event, such as the element that triggered the event
  * (srcElement).
  */
-function move(event){
+function move(event) {
     restart_message();
     let button_pressed = event.srcElement;
     write_char(button_pressed);
     let finish = game_is_over();
-    if (finish === true){
+    if (finish === true) {
         show_winning_message();
         restart_game();
-    }else if (finish === null){
+    } else if (finish === null) {
         show_tie_message();
         restart_game();
-    }else{
+    } else {
         player_change();
         write_who_has_turn_is_it();
     }
@@ -97,7 +105,7 @@ function move(event){
 /**
  * The function "restart_game" hides the keyboard, shows a form, and restarts the keyboard.
  */
-function restart_game(){
+function restart_game() {
     hide_keyboard("keyboard");
     show_form("myform");
     restart_keyboard(document.getElementsByClassName("pos"));
@@ -108,8 +116,8 @@ function restart_game(){
  * @param buttons_pos - The `buttons_pos` parameter is an array of objects representing the positions
  * of buttons on a keyboard. Each object in the array has two properties: `value` and `disabled`.
  */
-function restart_keyboard(buttons_pos){
-    for (let bot of buttons_pos){
+function restart_keyboard(buttons_pos) {
+    for (let bot of buttons_pos) {
         bot.value = "";
         bot.disabled = false;
     }
@@ -123,13 +131,13 @@ function restart_keyboard(buttons_pos){
  * - null (tie): when there is no combination of 3 in lines and there are no free spaces
  * - true (finished): when there is a match of 3 in stripes
  */
-function game_is_over(){
+function game_is_over() {
     let buttons_all = document.getElementsByClassName("pos");
     let buttons = get_selected_buttons(buttons_all, get_char());
-    if (check_combination(buttons)){
+    if (check_combination(buttons)) {
         return true;
     }
-    if (!there_are_free_spaces(buttons_all)){
+    if (!there_are_free_spaces(buttons_all)) {
         return null;
     }
     return false;
@@ -143,31 +151,41 @@ function game_is_over(){
  * @returns a boolean value. It returns true if there is a valid combination of buttons based on the
  * given conditions, and false otherwise.
  */
-function check_combination(buttons){
-    if (buttons.length < 3){
+function check_combination(buttons) {
+    if (buttons.length < 3) {
         return false;
     }
-    for (let i = 0; i < buttons.length - 2; i+=1){
-        for (let j = i+1; j< buttons.length - 1; j+=1){
-            for (let k = j + 1; k<=buttons.length - 1; k+=1){
+    for (let i = 0; i < buttons.length - 2; i += 1) {
+        for (let j = i + 1; j < buttons.length - 1; j += 1) {
+            for (let k = j + 1; k <= buttons.length - 1; k += 1) {
 
                 if (combinations[buttons[i]] != undefined &&
                     combinations[buttons[i]][buttons[j]] != undefined &&
-                    combinations[buttons[i]][buttons[j]][buttons[k]] !=  undefined){
+                    combinations[buttons[i]][buttons[j]][buttons[k]] != undefined) {
 
                     return true;
                 }
-             }
+            }
         }
     }
     return false;
 }
 
-function get_selected_buttons(buttons_pos, char){
+/**
+ * The function "get_selected_buttons" returns an array of button IDs that have a specific character
+ * value.
+ * @param buttons_pos - The `buttons_pos` parameter is an array of objects that represent buttons. Each
+ * object has two properties: `id` and `value`. The `id` property represents the id of the button, and
+ * the `value` property represents the character value of the button.
+ * @param char - The `char` parameter is a character that you want to match with the `value` property
+ * of each object in the `buttons_pos` array.
+ * @returns an array of button IDs that have a value equal to the specified character.
+ */
+function get_selected_buttons(buttons_pos, char) {
     let buttons = [];
 
-    for (let bot of buttons_pos){
-        if (bot.value === char){
+    for (let bot of buttons_pos) {
+        if (bot.value === char) {
             buttons.push(bot.id.substring(3))
         }
     }
@@ -182,10 +200,10 @@ function get_selected_buttons(buttons_pos, char){
  * @returns a boolean value. It returns true if there are free spaces (buttons with empty values) in
  * the buttons_pos array, and false if all the spaces are filled (all buttons have non-empty values).
  */
-function there_are_free_spaces(buttons_pos){
+function there_are_free_spaces(buttons_pos) {
     let full = 0;
-    for (let bot of buttons_pos){
-        if (bot.value !== ""){
+    for (let bot of buttons_pos) {
+        if (bot.value !== "") {
             full += 1;
         }
     }
@@ -196,7 +214,7 @@ function there_are_free_spaces(buttons_pos){
  * The function "write_char" sets the value of a button to a character and disables the button.
  * @param boton - The parameter "boton" is a reference to a button element in HTML.
  */
-function write_char(boton){
+function write_char(boton) {
     boton.value = get_char();
     boton.disabled = true;
 }
@@ -207,9 +225,9 @@ function write_char(boton){
  * @param player1 - The name of the first player.
  * @param player2 - The `player2` parameter is the name of the second player in the game.
  */
-function show_player_names(player1, player2){
-    document.getElementById("name_player1").innerHTML = player1 + "(" + CHAR_PLAYER1 + ")";
-    document.getElementById("name_player2").innerHTML = player2 + "(" + CHAR_PLAYER2 + ")";
+function show_player_names(player1, player2) {
+    document.getElementById("name_player1").innerHTML = player1 + " (" + CHAR_PLAYER1 + ")";
+    document.getElementById("name_player2").innerHTML = player2 + " (" + CHAR_PLAYER2 + ")";
 }
 
 /**
@@ -221,14 +239,14 @@ function show_player_names(player1, player2){
  * players are valid or not. The second element is a string message providing information about the
  * validation result.
  */
-function validate_players(player1, player2){
-    if (player1.trim() === ""){
+function validate_players(player1, player2) {
+    if (player1.trim() === "") {
         return [false, "Invalid player 1 name"];
     }
-    if (player2.trim() === ""){
+    if (player2.trim() === "") {
         return [false, "Invalid player2 name"];
     }
-    if (player1.trim() === player2.trim()){
+    if (player1.trim() === player2.trim()) {
         return [false, "Player1 and player2 have the same name"];
     }
     return [true, ""];
